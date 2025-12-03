@@ -1,4 +1,4 @@
-name: Sync upstream main to dev
+name: Sync upstream master to dev
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
       - name: Add upstream remote
         run: |
           git remote add upstream https://github.com/goerz/jupytext.nvim.git
-          git fetch upstream main
+          git fetch upstream master
 
       - name: Ensure dev branch exists
         run: |
@@ -39,9 +39,9 @@ jobs:
             git checkout -b dev
           fi
 
-      - name: Merge upstream main into dev
+      - name: Merge upstream master into dev
         run: |
-          git merge --no-edit upstream/main || {
+          git merge --no-edit upstream/master || {
             echo "Merge conflict detected, aborting merge."
             git merge --abort || true
             exit 1
