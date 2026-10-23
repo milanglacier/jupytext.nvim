@@ -7,7 +7,7 @@ jobs:
     name: Codestyle
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Stylua
         uses: JohnnyMorganz/stylua-action@v4
         with:
@@ -18,7 +18,7 @@ jobs:
     name: Docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install pandoc
         uses: pandoc/actions/setup@v1
         with:
@@ -33,12 +33,17 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: rhysd/action-setup-vim@v1
         id: vim
         with:
           neovim: true
           version: v0.10.2
+        env:
+          # Keep the unpacked release on the same filesystem as $HOME.
+          # On the ubuntu-26.04 runner image, /tmp is a separate tmpfs,
+          # so the action's cross-device rename into $HOME fails with EXDEV.
+          TMPDIR: ${{ runner.temp }}
       - name: Install Jupytext
         run: |
           python -m pip install --upgrade pip
